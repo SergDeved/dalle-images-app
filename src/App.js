@@ -4,6 +4,27 @@ const App = () => {
         'Un mono comiendo pan',
         'Un programador frustrado',
     ]
+
+    const getImages = async () => {
+        try {
+            const options = {
+                method: 'POST',
+                body: JSON.stringify({
+                message: "hola"
+            }),
+                headers: {
+                    "Content-type": "applications/json"
+                }
+        }
+
+            const response = await fetch('http://localhost:8000/images', options)
+            const data = await response.json()
+            console.log(data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <div className="app">
             <section className="search-section">
@@ -12,7 +33,7 @@ const App = () => {
                 </p>
                 <div className="input-container">
                     <input className="" placeholder="Un telefono dando voleteretas"/>
-                    <button>Generar</button>
+                    <button onClick={getImages}>Generar</button>
                 </div>
             </section>
             <section className="image-section"></section>
