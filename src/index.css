@@ -67,6 +67,80 @@ body {
 
 }
 
+/* Estilos para el modo claro */
+body {
+    /* Estilos para el modo claro */
+    background-color: #fafafc;
+    color: #777;
+}
+
+/* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #222;
+    color: #ccc;
+}
+
+/* Otros estilos específicos para el modo oscuro */
+body.dark-mode .input-container input::placeholder {
+    color: #555;
+}
+
+body.dark-mode .surprise {
+    background-color: #555;
+    color: #fff;
+}
+
+/* Estilos para el modo claro */
+.image-section img {
+    /* Estilos para las imágenes en el modo claro */
+}
+
+/* Estilos para el modo oscuro */
+body.dark-mode .image-section img {
+    /* Estilos para las imágenes en el modo oscuro */
+}
+
+/* Estilos para el modo claro */
+.modal {
+    /* Estilos para el modal en el modo claro */
+}
+
+/* Estilos para el modo oscuro */
+body.dark-mode .modal {
+    /* Estilos para el modal en el modo oscuro */
+}
+
+/* Otros estilos específicos para el modo oscuro */
+body.dark-mode .variation-button {
+    color: #fff;
+}
+
+
+/* Estilos para el modo claro */
+@media (max-width: 556px) {
+    .image-section img {
+        /* Estilos para las imágenes en el modo claro en pantallas pequeñas */
+    }
+}
+
+/* Estilos para el modo oscuro */
+@media (max-width: 556px) {
+    body.dark-mode .image-section img {
+        /* Estilos para las imágenes en el modo oscuro en pantallas pequeñas */
+    }
+}
+
+/* Estilos para el modo claro */
+@media (prefers-color-scheme: light) {
+    /* Estilos para el modo claro basado en la configuración del navegador */
+}
+
+/* Estilos para el modo oscuro */
+@media (prefers-color-scheme: dark) {
+    /* Estilos para el modo oscuro basado en la configuración del navegador */
+}
+
+
 p {
     font-weight: 200;
     font-size: 14px;
@@ -185,6 +259,32 @@ p {
     z-index: 10;
 }
 
+
+.modal {
+    background-color: #ffffff;
+    color: #000000;
+    /* Resto de estilos para el modo claro */
+}
+
+.modal.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+    /* Resto de estilos para el modo oscuro */
+}
+
+.modal.dark-mode .label-file {
+    color: #ffffff;
+}
+
+.modal.dark-mode p {
+    color: #ffffff;
+}
+
+
+.modal.dark-mode button {
+    background-color: #333333;
+}
+
 .modal{
     position:relative;
     z-index: 100;
@@ -220,3 +320,22 @@ p {
 .variation-button{
     font-family: Switzer-Bold;
 }
+
+
+.toggle-position {
+    position: absolute;
+    top: 10px; /* Ajusta la posición vertical según sea necesario */
+    right: 10px; /* Ajusta la posición horizontal según sea necesario */
+}
+
+@media (max-width: 900px) {
+    .toggle-position {
+        position: relative;
+        margin:  10px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
