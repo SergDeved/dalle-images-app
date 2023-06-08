@@ -103,7 +103,7 @@ const App = () => {
                 <p className="extra-info">Or,
                     <span>
                         <label htmlFor="files"> upload an image </label>
-                        <input onChange={uploadImage} id="files" accept="image/*" type="file" hidden/>
+                        <input onChange={uploadImage} id="files" accept="image/png" type="file" hidden/>
                     </span>
                     to edit.
                 </p>

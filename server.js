@@ -48,15 +48,23 @@ app.post('/images', async (req, res) => {
 
 app.post("/upload", (req, res) => {
     upload(req, res, (err) => {
-        if (err instanceof multer.MulterError){
-            return res.status(500).json(err)
-        }else if (err){
-            return res.status(500).json(err)
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err);
+        } else if (err) {
+            return res.status(500).json(err);
         }
-        console.log(req.file.path)
-        filePath = req.file.path
-    })
-})
+
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        console.log(req.file.path);
+        filePath = req.file.path;
+        res.json({ message: 'File uploaded successfully' }); // Enviar respuesta como JSON
+    });
+});
+
+
 
 app.post('/variations', async(req,res) => {
     try{
