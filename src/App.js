@@ -9,6 +9,8 @@ const App = () => {
     const [selectedImage, setSelectedImage] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [fileError, setFileError] = useState(null);
+    const [generating, setGenerating] = useState(false);
+
 
 
     const surpriseMe = () => {
@@ -17,32 +19,36 @@ const App = () => {
     }
 
     const getImages = async () => {
-        setImages(null)
+        setImages(null);
         if (value === null || value.trim() === '') {
-            setError('Error! Must have a search term')
+            setError('Error! Must have a search term');
             return;
-        }else {
-            setError(null)
+        } else {
+            setError(null);
         }
 
         try {
+            setGenerating(true); // Habilitar "generating" antes de hacer la solicitud
+
             const options = {
                 method: 'POST',
                 body: JSON.stringify({
                     message: value
                 }),
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json'
                 }
-            }
+            };
 
-            const response = await fetch('http://192.168.0.100:8000/images', options)
-            const data = await response.json()
-            setImages(data)
+            const response = await fetch('http://192.168.0.100:8000/images', options);
+            const data = await response.json();
+            setImages(data);
         } catch (error) {
-            console.error(error)
+            console.error(error);
+        } finally {
+            setGenerating(false); // Deshabilitar "generating" después de la solicitud (éxito o error)
         }
-    }
+    };
 
 
     const uploadImage = async (e) => {
@@ -110,7 +116,10 @@ const App = () => {
                         value={value}
                         placeholder="A tree in the water"
                         onChange={(e => setValue(e.target.value))}/>
-                    <button onClick={getImages}>Generate</button>
+                    <button onClick={getImages}>
+                        {generating ? 'Generating...' : 'Generate'}
+                    </button>
+
                 </div>
 
                 <div className="extra-info">
