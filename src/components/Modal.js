@@ -17,12 +17,12 @@ const Modal = ({setModalOpen, setSelectedImage, selectedImage, generateVariation
     }
     return (
         <div className="modal">
-            <div onClick={closeModal}>✖</div>
+            <div onClick={closeModal} className="label-file">✖</div>
             <div className="img-container">
                 {selectedImage && <img ref={ref} src={URL.createObjectURL(selectedImage)} alt="uploaded image"/>}
             </div>
             <p>{error || "* Image must be 256 x 256"}</p>
-            {! error && <button onClick={checkSize}>Generate</button>}
+            {! error && <button onClick={checkSize} className="variation-button">Generate</button>}
             {error && <button onClick={closeModal}>Close this and try again</button>}
         </div>
     )

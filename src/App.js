@@ -4,10 +4,12 @@ import Modal from "./components/Modal";
 
 const App = () => {
     const [images, setImages] = useState(null)
-    const [value, setValue] = useState(null)
+    const [value, setValue] = useState("")
     const [error, setError] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
+    const [fileError, setFileError] = useState(null);
+
 
     const surpriseMe = () => {
         const randomValue = prompts[Math.floor(Math.random() * prompts.length)];
@@ -16,9 +18,13 @@ const App = () => {
 
     const getImages = async () => {
         setImages(null)
-        if (value === null) {
+        if (value === null || value.trim() === '') {
             setError('Error! Must have a search term')
+            return;
+        }else {
+            setError(null)
         }
+
         try {
             const options = {
                 method: 'POST',
@@ -30,19 +36,27 @@ const App = () => {
                 }
             }
 
-            const response = await fetch('http://localhost:8000/images', options)
+            const response = await fetch('http://192.168.0.100:8000/images', options)
             const data = await response.json()
-            console.log(data)
             setImages(data)
         } catch (error) {
             console.error(error)
         }
     }
 
-    console.log(value)
 
     const uploadImage = async (e) => {
-        console.log(e.target.files[0])
+        const file = e.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        // Verificar la extensión del archivo
+        if (file.type !== "image/png") {
+            setFileError("Only PNG files are allowed");
+            return;
+        }
 
         const formData = new FormData()
         setModalOpen(true)
@@ -55,9 +69,8 @@ const App = () => {
                 method: "POST",
                 body: formData
             }
-            const response = await fetch('http://localhost:8000/upload', options)
+            const response = await fetch('http://192.168.0.100:8000/upload', options)
             const data = await response.json()
-            console.log(data)
 
         } catch (error) {
             console.error(error)
@@ -75,9 +88,8 @@ const App = () => {
             const options = {
                 method: "POST"
             }
-            const response = await fetch('http://localhost:8000/variations', options)
+            const response = await fetch('http://192.168.0.100:8000/variations', options)
             const data = await response.json()
-            console.log(data)
             setImages(data)
             setError(null)
             setModalOpen(false)
@@ -88,27 +100,35 @@ const App = () => {
 
     return (
         <div className="app">
+            <h1>GENERATE & MODIFY YOUR OWN IMAGES</h1>
             <section className="search-section">
-                <p> Añade una descripción
-                    <span className="surprise" onClick={surpriseMe}>Sorprendeme</span>
+                <p> Add a description
+                    <span className="surprise" onClick={surpriseMe}>Surprise Me</span>
                 </p>
                 <div className="input-container">
                     <input
                         value={value}
-                        placeholder="Un telefono dando voleteretas"
+                        placeholder="A tree in the water"
                         onChange={(e => setValue(e.target.value))}/>
-                    <button onClick={getImages}>Generar</button>
+                    <button onClick={getImages}>Generate</button>
                 </div>
 
-                <p className="extra-info">Or,
+                <div className="extra-info">
+                <p className="">Or,
                     <span>
-                        <label htmlFor="files"> upload an image </label>
+                        <label htmlFor="files" className="label-file"> upload an image </label>
                         <input onChange={uploadImage} id="files" accept="image/png" type="file" hidden/>
                     </span>
                     to edit.
+
                 </p>
-                {error && <p>{error}</p>}
-                {modalOpen &&
+                    {error && <p className="">{error}</p>}
+                    {fileError && <p className="">{fileError}</p>}
+                </div>
+
+
+
+                {modalOpen && fileError === null && (
                     <div className="overlay">
                         <Modal
                             setModalOpen={setModalOpen}
@@ -117,7 +137,7 @@ const App = () => {
                             generateVariations={generateVariations}
                         />
                     </div>
-                }
+                )}
             </section>
             <section className="image-section">
                 {images?.map((image, _index) => (

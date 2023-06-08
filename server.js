@@ -22,7 +22,6 @@ const storage = multer.diskStorage({
         cb(null, 'public')
     },
     filename: (req, file, cb) => {
-        console.log('file', file)
         cb(null, Date.now() + "-" + file.originalname)
     }
 })
@@ -37,7 +36,6 @@ app.post('/images', async (req, res) => {
             n: 3,
             size: "1024x1024",
         })
-        console.log(response.data.data)
         res.send(response.data.data)
 
     } catch (error) {
@@ -58,7 +56,6 @@ app.post("/upload", (req, res) => {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
-        console.log(req.file.path);
         filePath = req.file.path;
         res.json({ message: 'File uploaded successfully' }); // Enviar respuesta como JSON
     });
@@ -70,7 +67,7 @@ app.post('/variations', async(req,res) => {
     try{
         const response = await openai.createImageVariation(
             fs.createReadStream(filePath),
-            2,
+            3,
             "1024x1024"
         )
 
