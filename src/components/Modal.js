@@ -2,6 +2,7 @@ import {useState, useRef} from "react";
 
 const Modal = ({ setModalOpen, setSelectedImage, selectedImage, generateVariations, darkMode }) => {
     const [error, setError] = useState(null);
+    const [generating, setGenerating] = useState(false);
     const ref = useRef(null);
     const closeModal = () => {
         setModalOpen(false);
@@ -10,7 +11,15 @@ const Modal = ({ setModalOpen, setSelectedImage, selectedImage, generateVariatio
 
     const checkSize = () => {
         if (ref.current.width === 256 && ref.current.height === 256) {
-            generateVariations();
+            setGenerating(true); // Inicia la generación
+            generateVariations()
+                .then(() => {
+                    setGenerating(false); // Finaliza la generación
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setGenerating(false); // Finaliza la generación en caso de error
+                });
         } else {
             setError("Error: Choose 256 x 256 image");
         }
@@ -29,7 +38,7 @@ const Modal = ({ setModalOpen, setSelectedImage, selectedImage, generateVariatio
             <p>{error || "* Image must be 256 x 256"}</p>
             {!error && (
                 <button onClick={checkSize} className="variation-button">
-                    Generate
+                    {generating ? "Modifying..." : "Modify"}
                 </button>
             )}
             {error && <button onClick={closeModal} className="variation-button">Close this and try again</button>}
