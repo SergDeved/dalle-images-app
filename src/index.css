@@ -130,7 +130,15 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 0px 0px 0px 0px;
 }
+
+@media (max-width: 556px) {
+    .input-container button {
+        border-radius: 6px;
+    }
+}
+
 
 .input-container::before {
     content: "";
@@ -145,6 +153,8 @@ p {
 .input-container button:active {
     background-color: #cacaca;
 }
+
+
 
 .image-section {
     width: 100%;
